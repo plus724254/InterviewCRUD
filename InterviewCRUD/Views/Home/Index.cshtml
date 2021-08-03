@@ -1,31 +1,108 @@
-﻿@{
-    ViewBag.Title = "Home Page";
-}
+﻿<div id="studentPage" class="row mt-5">
+    <div class="col-md-12">
+        <div class="col-md-12 mt-2">
+            <label>學號</label>
+            <input name="number" v-model="studentEdit.number">
+            <label>生日</label>
+            <input name="birthday" v-model="studentEdit.birthday">
+        </div>
+        <div class="col-md-12 mt-2">
+            <label>姓名</label>
+            <input name="name" v-model="studentEdit.name">
+            <label>信箱</label>
+            <input name="email" v-model="studentEdit.email">
+        </div>
+        <div class="col-md-12">
+            <button v-if="editMode" v-on:click="saveEdit" type="button" class="btn btn-warning">儲存</button>
+            <button v-else  v-on:click="addNewStudent" type="button" class="btn btn-primary">新增</button>
+        </div>
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+        <table class="table mt-5">
+            <thead>
+                <tr>
+                    <th>學號</th>
+                    <th>姓名</th>
+                    <th>生日</th>
+                    <th>Email</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(student, index) in students">
+                    <th>{{student.number}}</th>
+                    <th>{{student.birthday}}</th>
+                    <th>{{student.name}}</th>
+                    <th>{{student.email}}</th>
+                    <th>
+                        <button type="button" class="btn btn-danger">刪除</button>
+                        <button :id="student.number" v-on:click="edit($event)" :data-number="student.number" type="button" class="btn btn-warning">編輯</button>
+                    </th>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+<script>
+    var studentPage = new Vue({
+        el: '#studentPage',
+        data: {
+            modifyNumber : null,
+            studentEdit: {
+                number: null,
+                birthday: null,
+                name: null,
+                email: null,
+            },
+            editMode: false,
+            students: [{
+                number: "9999",
+            }],
+        },
+        methods: {
+            edit(number) {
+                this.editMode = !this.editMode;
+                this.modifyNumber = event.currentTarget.id;
+            },
+            saveEdit() {
+                this.editMode = false;
+
+                axios
+                    .put('/api/student', this.studentEdit)
+                    .then(response => {
+                        let editTarget = this.students.find(x => x.number == this.modifyNumber);
+                        Object.assign(editTarget, this.studentEdit);
+                        console.log(editTarget);
+                        this.modifyNumber = this.studentEdit.number;
+                        alert("修改成功");
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            addNewStudent() {
+                axios
+                    .post('/api/student', this.studentEdit)
+                    .then(response => {
+                        let newStudent = Object.assign({}, this.studentEdit);;
+                        this.students.push(newStudent);
+                        alert("新增成功");
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+        },
+        mounted() {
+            //axios
+            //    .get('/api/student')
+            //    .then(response => (this.students = response.data))
+            //    .catch(function (error) {
+            //        console.log(error);
+            //    });
+        }
+    });
+
+</script>
