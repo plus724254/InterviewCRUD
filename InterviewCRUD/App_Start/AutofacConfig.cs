@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
 using Autofac.Integration.WebApi;
+using AutoMapper;
 using InterviewCRUD.Repository.Repositories;
 using InterviewCRUD.Service.Services;
 using System;

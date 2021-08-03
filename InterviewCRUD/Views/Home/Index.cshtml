@@ -34,7 +34,7 @@
                     <th>{{student.name}}</th>
                     <th>{{student.email}}</th>
                     <th>
-                        <button type="button" class="btn btn-danger">刪除</button>
+                        <button :id="student.number" v-on:click="delete($event)" type="button" class="btn btn-danger">刪除</button>
                         <button :id="student.number" v-on:click="edit($event)" :data-number="student.number" type="button" class="btn btn-warning">編輯</button>
                     </th>
 
@@ -57,18 +57,28 @@
                 email: null,
             },
             editMode: false,
-            students: [{
-                number: "9999",
-            }],
+            students: null,
         },
         methods: {
+            delete(event) {
+                let targetNumber = event.currentTarget.id;
+                axios
+                    .delete('/api/student', targetNumber)
+                    .then(response => {
+                        let index = this.students.indexof(this.students.find(x => x.number == this.modifyNumber));
+                        this.students.splice(index, 1);
+                        alert("刪除成功");
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
             edit(event) {
                 this.editMode = !this.editMode;
                 this.modifyNumber = event.currentTarget.id;
             },
             saveEdit() {
                 this.editMode = false;
-
                 axios
                     .put('/api/student', this.studentEdit)
                     .then(response => {
@@ -96,12 +106,12 @@
             },
         },
         mounted() {
-            //axios
-            //    .get('/api/student')
-            //    .then(response => (this.students = response.data))
-            //    .catch(function (error) {
-            //        console.log(error);
-            //    });
+            axios
+                .get('/api/student')
+                .then(response => (this.students = response.data))
+                .catch(function (error) {
+                    console.log(error);
+                });
         }
     });
 
