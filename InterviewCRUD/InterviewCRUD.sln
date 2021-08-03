@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.31515.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterviewCRUD", "InterviewCRUD.csproj", "{7576B441-9BF7-44F5-9A65-4D369C583705}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterviewCRUD.Service", "..\InterviewCRUD.Service\InterviewCRUD.Service.csproj", "{E7D1C92B-4588-430D-99BE-E60F97ED05BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterviewCRUD.Repository", "..\InterviewCRUD.Repository\InterviewCRUD.Repository.csproj", "{5D61235E-6681-4810-B743-48723ECA7750}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{7576B441-9BF7-44F5-9A65-4D369C583705}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7576B441-9BF7-44F5-9A65-4D369C583705}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7576B441-9BF7-44F5-9A65-4D369C583705}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7D1C92B-4588-430D-99BE-E60F97ED05BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7D1C92B-4588-430D-99BE-E60F97ED05BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7D1C92B-4588-430D-99BE-E60F97ED05BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7D1C92B-4588-430D-99BE-E60F97ED05BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D61235E-6681-4810-B743-48723ECA7750}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D61235E-6681-4810-B743-48723ECA7750}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D61235E-6681-4810-B743-48723ECA7750}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D61235E-6681-4810-B743-48723ECA7750}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
