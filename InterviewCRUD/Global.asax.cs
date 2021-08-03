@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Http;
-
+using InterviewCRUD.App_Start;
 
 namespace InterviewCRUD
 {
@@ -15,6 +15,7 @@ namespace InterviewCRUD
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+            AutofacConfig.Bootstrapper();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

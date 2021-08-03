@@ -1,4 +1,5 @@
 ﻿using InterviewCRUD.Models.ViewModels;
+using InterviewCRUD.Service.Services;
 using System.Collections.Generic;
 using System.Web.Http;
 
@@ -7,11 +8,17 @@ namespace InterviewCRUD.Controllers.Api
     //[RoutePrefix("api/Student")]
     public class StudentController : ApiController
     {
+        private readonly IStudentService _studentService;
+        public StudentController(IStudentService studentService)
+        {
+            _studentService = studentService;
+        }
+
         [HttpGet]
         //[Route("")]
         public IHttpActionResult GetStudents()
         {
-            return Ok(new List<StudentViewModel>());
+            return Ok(_studentService.GetAllStudents());
         }
 
         [HttpGet]
