@@ -80,8 +80,6 @@
                 Object.assign(this.studentEdit, editTarget);
             },
             saveEdit() {
-                this.editMode = false;
-
                 if (this.modifyNumber == this.studentEdit.number) {
                     axios
                         .patch('/api/student', this.studentEdit)
@@ -89,6 +87,7 @@
                             let editTarget = this.students.find(x => x.number == this.modifyNumber);
                             Object.assign(editTarget, this.studentEdit);
                             alert("修改成功");
+                            this.editMode = false;
                         })
                         .catch(function (error) {
                             alert(error.response.data.message);
@@ -101,6 +100,7 @@
                             Object.assign(editTarget, this.studentEdit);
                             this.modifyNumber = this.studentEdit.number;
                             alert("修改成功");
+                            this.editMode = false;
                         })
                         .catch(function (error) {
                             alert(error.response.data.message);

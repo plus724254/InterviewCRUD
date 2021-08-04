@@ -91,14 +91,15 @@
                 Object.assign(this.courseEdit, editTarget);
             },
             saveEdit() {
-                this.editMode = false;
                 if (this.modifyNumber == this.courseEdit.number) {
                     axios
                         .patch('/api/course', this.courseEdit)
                         .then(response => {
                             let editTarget = this.courses.find(x => x.number == this.modifyNumber);
                             Object.assign(editTarget, this.courseEdit);
+                            this.editMode = false;
                             alert("修改成功");
+
                         })
                         .catch(function (error) {
                             alert(error.response.data.message);
@@ -111,6 +112,7 @@
                             let editTarget = this.courses.find(x => x.number == this.modifyNumber);
                             Object.assign(editTarget, this.courseEdit);
                             this.modifyNumber = this.courseEdit.number;
+                            this.editMode = false;
                             alert("修改成功");
                         })
                         .catch(function (error) {
