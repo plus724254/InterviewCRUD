@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace InterviewCRUD.Service.Models.DTO
+namespace InterviewCRUD.Repository.Models.DTO
 {
-    public class StudentDTO
+    public class CourseDTO
     {
         public string Number { get; set; }
-        public string Birthday { get; set; }
         public string Name { get; set; }
-        public string Email { get; set; }
+        public string Credit { get; set; }
+        public string Place { get; set; }
+        public string TeacherName { get; set; }
     }
 }

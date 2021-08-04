@@ -1,7 +1,174 @@
-﻿@{
-    ViewBag.Title = "About";
-}
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+﻿<div id="courseSelectionPage" class="row mt-5">
+    <div class="col-md-12">
+        <div class="col-md-12 mt-2 mb-2">
+            <div class="col-md-12 pl-0">
+                <select v-model="studentSelected" v-on:change="onStudentSelect($event)">
+                    <option value="0">
+                        請選擇學生
+                    </option>
+                    <option v-for="(student ,index) in students" :value="student.number">
+                        {{student.number}} ({{student.name}})
+                    </option>
+                </select>
+            </div>
 
-<p>Use this area to provide additional information.</p>
+            <div class="col-md-12 pl-0 mt-3">
+                <div v-for="(courseEdit, index) in courseEdits">
+                    <label>{{courseEdit.courseName}}</label>
+                    <input type="checkbox" v-model="courseEdit.selected" :data-number="courseEdit.courseNumber">
+                </div>
+            </div>
+
+            <button v-if="editMode" @*v-on:click="saveEdit"*@ type="button" class="btn btn-warning">儲存</button>
+            <button v-else v-on:click="addNewStudentCourse" type="button" class="btn btn-primary">新增</button>
+        </div>
+
+        <table class="table mt-2">
+            <thead>
+                <tr>
+                    <th>學號</th>
+                    <th>課程</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(studentWithCourse, index) in allStudentWithCourses">
+                    <th>{{studentWithCourse.studentNumber}}</th>
+                    <th>{{selectCourseNames(studentWithCourse.courses)}}</th>
+
+                    <th>
+                        <button :data-number="studentWithCourse.studentNumber" v-on:click="saveDelete($event)" type="button" class="btn btn-danger">刪除</button>
+                        <button :data-number="studentWithCourse.studentNumber" @*v-on:click="edit($event)"*@ type="button" class="btn btn-warning">編輯</button>
+                    </th>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+    var courseSelectionPage = new Vue({
+        el: '#courseSelectionPage',
+        data: {
+            students: null,
+            courses: null,
+            courseEdits: [],
+            studentSelected: 0,
+            modifyCourseSelection: null,
+            studentWithCourses: null,
+            allStudentWithCourses: null,
+
+            editMode: false,
+            courseSelection: null,
+        },
+        methods: {
+            onStudentSelect(event) {
+                console.log(event.currentTarget.value);
+                let targetNumber = event.currentTarget.value;
+                this.getStudentCourse(targetNumber);
+                this.editMode = this.allStudentWithCourses.find(e => e.studentNumber == this.studentSelected) == undefined ? false:true ;
+            },
+            getStudentCourse(studentNumber) {
+                axios
+                    .get('/api/StudentCourseSelection/' + studentNumber)
+                    .then(response => {
+                        this.courseEdits.forEach(e => e.selected = false);
+                        this.studentWithCourses = response.data;
+                        this.studentWithCourses.courses.forEach(e => {
+                            let courseEdit = this.courseEdits.find(x => x.courseNumber == e.number);
+                            console.log(courseEdit);
+                            if (courseEdit != undefined) {
+                                courseEdit.selected = true;
+                            } 
+                        })
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            selectCourseNames(courses) {
+                console.log(courses);
+                return courses.map(x => x.name).join('、');
+            },
+            addNewStudentCourse() {
+                if (this.studentSelected == 0 || this.courseEdits.every(x => x.selected != true)) {
+                    alert("學生與課程不得空白")
+                    return;
+                }
+
+                let newStudentCourse = {
+                    studentNumber: this.studentSelected,
+                    courses: [],
+                }
+                this.courseEdits.forEach(e => {
+                        if (e.selected == true) {
+                            newStudentCourse.courses.push({
+                                number: e.courseNumber,
+                                name: e.courseName,
+                            });
+                        }
+                    }
+                );
+
+                axios
+                    .post('/api/StudentCourseSelection/', newStudentCourse)
+                    .then(response => {
+                        this.allStudentWithCourses.push(newStudentCourse);
+                        this.editMode = true;
+                        alert("新增成功");
+                    })
+                    .catch(function (error) {
+                        alert(error.response.data.message);
+                    });
+            },
+            saveDelete(event) {
+                let targetNumber = event.currentTarget.dataset.number;
+                console.log(targetNumber);
+                axios
+                    .delete('/api/StudentCourseSelection/' + targetNumber)
+                    .then(response => {
+                        let index = this.allStudentWithCourses.findIndex(x => x == this.allStudentWithCourses.find(x => x.studentNumber == targetNumber));
+                        this.allStudentWithCourses.splice(index, 1);
+                        alert("刪除成功");
+                    })
+                    .catch(function (error) {
+                        alert(error.response.data.message);
+                    });
+            },
+        },
+        mounted() {
+            axios
+                .get('/api/student')
+                .then(response => (this.students = response.data))
+                .catch(function (error) {
+                    console.log(error);
+                });
+            axios
+                .get('/api/course')
+                .then(response => {
+                    let courseEdits = this.courseEdits;
+                    this.courses = response.data;
+                    this.courses.forEach(e => courseEdits.push({
+                        courseNumber: e.number,
+                        courseName: e.name,
+                        selected: false,
+                    }));
+                })
+                .catch(function (error) {
+                    alert(error.response.data.message);
+                });
+
+            axios
+                .get('/api/StudentCourseSelection')
+                .then(response => {
+                    this.allStudentWithCourses = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+    });
+
+</script>

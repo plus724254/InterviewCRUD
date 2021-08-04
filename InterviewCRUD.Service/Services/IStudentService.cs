@@ -1,5 +1,5 @@
 ﻿using InterviewCRUD.Repository.Entities;
-using InterviewCRUD.Service.Models.DTO;
+using InterviewCRUD.Repository.Models.DTO;
 using System.Collections.Generic;
 
 namespace InterviewCRUD.Service.Services
@@ -11,5 +11,9 @@ namespace InterviewCRUD.Service.Services
         void DeleteStudent(string number);
         void ReplaceStudent(string sourceNumber, StudentDTO student);
         void EditStudent(StudentDTO student);
+        StudentCourseSelectionDTO GetStudentCourses(string studentNumber);
+        List<StudentCourseSelectionDTO> GetAllStudentCourses();
+        void AddStudentCourse(StudentCourseSelectionDTO studentCourseSelectionDTO);
+        void DeleteStudentCourses(string studentNumber);
     }
 }

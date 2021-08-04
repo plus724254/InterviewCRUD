@@ -1,12 +1,9 @@
 ﻿using InterviewCRUD.Models.ViewModels;
-using InterviewCRUD.Service.Models.DTO;
+using InterviewCRUD.Repository.Models.DTO;
 using InterviewCRUD.Service.Services;
 using InterviewCRUD.Tools;
 using InterviewCRUD.Tools.AutoMappers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Http;
 
 namespace InterviewCRUD.Controllers.Api

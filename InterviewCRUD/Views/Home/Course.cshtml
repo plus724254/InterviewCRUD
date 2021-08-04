@@ -1,6 +1,6 @@
 ﻿<div id="coursePage" class="row mt-5">
     <div class="col-md-12">
-        <div class="col-md-12 mt-2">
+        <div class="col-md-12 mt-2 mb-2">
             <div class="col-md-12 pl-0">
                 <label>課號　　</label>
                 <input name="number" v-model="courseEdit.number">
@@ -76,7 +76,7 @@
                 axios
                     .delete('/api/course/'+targetNumber)
                     .then(response => {
-                        let index = this.courses.indexOf(this.courses.find(x => x.number == this.modifyNumber));
+                        let index = this.courses.indexOf(this.courses.find(x => x.number == targetNumber));
                         this.courses.splice(index, 1);
                         alert("刪除成功");
                     })

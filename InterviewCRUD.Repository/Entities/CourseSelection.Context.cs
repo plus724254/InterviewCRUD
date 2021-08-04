@@ -26,6 +26,7 @@ namespace InterviewCRUD.Repository.Entities
         }
     
         public virtual DbSet<Course> Course { get; set; }
+        public virtual DbSet<CourseSelect> CourseSelect { get; set; }
         public virtual DbSet<Student> Student { get; set; }
     }
 }

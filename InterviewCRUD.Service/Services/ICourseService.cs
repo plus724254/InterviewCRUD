@@ -1,5 +1,5 @@
 ﻿using InterviewCRUD.Repository.Entities;
-using InterviewCRUD.Service.Models.DTO;
+using InterviewCRUD.Repository.Models.DTO;
 using System.Collections.Generic;
 
 namespace InterviewCRUD.Service.Services

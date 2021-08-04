@@ -1,20 +1,21 @@
 ﻿using InterviewCRUD.Repository.Entities;
+using InterviewCRUD.Repository.Models.DTO;
 using InterviewCRUD.Repository.Repositories;
-using InterviewCRUD.Service.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InterviewCRUD.Service.Services
 {
     public class CourseService : ICourseService
     {
         private readonly IGenericRepository<Course> _courseRepository;
-        public CourseService(IGenericRepository<Course> courseRepository)
+        private readonly IGenericRepository<CourseSelect> _courseSelectRepository;
+
+        public CourseService(IGenericRepository<Course> courseRepository, IGenericRepository<CourseSelect> courseSelectRepository)
         {
             _courseRepository = courseRepository;
+            _courseSelectRepository = courseSelectRepository;
         }
 
         public List<Course> GetAllCourses() => _courseRepository.GetAll().ToList();
@@ -37,6 +38,10 @@ namespace InterviewCRUD.Service.Services
 
         public void DeleteCourse(string number)
         {
+            var selectCource = _courseSelectRepository.Find(x => x.CourseNumber == number).ToList();
+            _courseSelectRepository.RemoveRange(selectCource);
+            _courseSelectRepository.SaveChanges();
+
             var course = _courseRepository.GetById(number);
             _courseRepository.Remove(course);
 
@@ -47,18 +52,25 @@ namespace InterviewCRUD.Service.Services
         {
             CheckRepeatCourse(courseDTO.Number);
 
-            var oldCourse = _courseRepository.GetById(sourceNumber);
-            _courseRepository.Add(new Course()
+            try
             {
-                Number = courseDTO.Number,
-                Name = courseDTO.Name,
-                Credit = int.Parse(courseDTO.Credit),
-                Place = courseDTO.Place,
-                TeacherName = courseDTO.TeacherName,
-            });
-            _courseRepository.Remove(oldCourse);
+                var oldCourse = _courseRepository.GetById(sourceNumber);
+                _courseRepository.Add(new Course()
+                {
+                    Number = courseDTO.Number,
+                    Name = courseDTO.Name,
+                    Credit = int.Parse(courseDTO.Credit),
+                    Place = courseDTO.Place,
+                    TeacherName = courseDTO.TeacherName,
+                });
+                _courseRepository.Remove(oldCourse);
 
-            _courseRepository.SaveChanges();
+                _courseRepository.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("尚有課程無法修改課號");
+            }
         }
 
         public void EditCourse(CourseDTO courseDTO)

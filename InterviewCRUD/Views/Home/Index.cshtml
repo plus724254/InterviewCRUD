@@ -12,7 +12,7 @@
             <label>信箱</label>
             <input name="email" v-model="studentEdit.email">
         </div>
-        <div class="col-md-12">
+        <div class="col-md-12 mt-2">
             <button v-if="editMode" v-on:click="saveEdit" type="button" class="btn btn-warning">儲存</button>
             <button v-else  v-on:click="addNewStudent" type="button" class="btn btn-primary">新增</button>
         </div>
@@ -62,11 +62,10 @@
         methods: {
             saveDelete(event) {
                 let targetNumber = event.currentTarget.dataset.number;
-                console.log(targetNumber);
                 axios
                     .delete('/api/student/'+targetNumber)
                     .then(response => {
-                        let index = this.students.indexOf(this.students.find(x => x.number == this.modifyNumber));
+                        let index = this.students.findIndex(x => x == this.students.find(x => x.number == targetNumber));
                         this.students.splice(index, 1);
                         alert("刪除成功");
                     })
@@ -112,7 +111,7 @@
                 axios
                     .post('/api/student', this.studentEdit)
                     .then(response => {
-                        let newStudent = Object.assign({}, this.studentEdit);;
+                        let newStudent = Object.assign({}, this.studentEdit);
                         this.students.push(newStudent);
                         alert("新增成功");
                     })

@@ -17,7 +17,7 @@ namespace InterviewCRUD.Repository.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Course()
         {
-            this.Student = new HashSet<Student>();
+            this.CourseSelect = new HashSet<CourseSelect>();
         }
     
         public string Number { get; set; }
@@ -27,6 +27,6 @@ namespace InterviewCRUD.Repository.Entities
         public string TeacherName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Student> Student { get; set; }
+        public virtual ICollection<CourseSelect> CourseSelect { get; set; }
     }
 }

@@ -1,15 +1,9 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
 using Autofac.Integration.WebApi;
-using AutoMapper;
 using InterviewCRUD.Repository.Repositories;
 using InterviewCRUD.Service.Services;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
 using System.Reflection;
-using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 
@@ -38,6 +32,9 @@ namespace InterviewCRUD.App_Start
                 .InstancePerLifetimeScope();
 
             builder.RegisterGeneric(typeof(GenericRepository<>)).As(typeof(IGenericRepository<>))
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<StudentRepository>().As<IStudentRepository>()
                 .InstancePerLifetimeScope();
 
             var container = builder.Build();

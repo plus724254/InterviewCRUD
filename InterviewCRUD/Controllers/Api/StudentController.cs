@@ -1,11 +1,8 @@
-﻿using AutoMapper;
-using InterviewCRUD.Models.ViewModels;
-using InterviewCRUD.Service.Models.DTO;
+﻿using InterviewCRUD.Models.ViewModels;
+using InterviewCRUD.Repository.Models.DTO;
 using InterviewCRUD.Service.Services;
 using InterviewCRUD.Tools;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web.Http;
 using AutoMap = InterviewCRUD.Tools.AutoMappers.AutoMap;
 
