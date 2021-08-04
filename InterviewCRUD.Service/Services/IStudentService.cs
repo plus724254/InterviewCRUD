@@ -15,5 +15,6 @@ namespace InterviewCRUD.Service.Services
         List<StudentCourseSelectionDTO> GetAllStudentCourses();
         void AddStudentCourse(StudentCourseSelectionDTO studentCourseSelectionDTO);
         void DeleteStudentCourses(string studentNumber);
+        void ReplaceStudentCourses(StudentCourseSelectionDTO studentCourseSelectionDTO);
     }
 }

@@ -36,6 +36,13 @@ namespace InterviewCRUD.Controllers.Api
             return Ok();
         }
 
+        [HttpPut]
+        public IHttpActionResult ReplaceStudentCourseSelection(StudentCourseSelectionDTO studentCourseSelectionDTO)
+        {
+            _studentService.ReplaceStudentCourses(studentCourseSelectionDTO);
+            return Ok();
+        }
+
         [HttpDelete]
         [Route("{studentNumber}")]
         public IHttpActionResult DeleteStudentCourses(string studentNumber)

@@ -19,7 +19,7 @@
                 </div>
             </div>
 
-            <button v-if="editMode" @*v-on:click="saveEdit"*@ type="button" class="btn btn-warning">儲存</button>
+            <button v-if="editMode" v-on:click="saveEdit" type="button" class="btn btn-warning">儲存</button>
             <button v-else v-on:click="addNewStudentCourse" type="button" class="btn btn-primary">新增</button>
         </div>
 
@@ -38,7 +38,7 @@
 
                     <th>
                         <button :data-number="studentWithCourse.studentNumber" v-on:click="saveDelete($event)" type="button" class="btn btn-danger">刪除</button>
-                        <button :data-number="studentWithCourse.studentNumber" @*v-on:click="edit($event)"*@ type="button" class="btn btn-warning">編輯</button>
+                        <button :data-number="studentWithCourse.studentNumber" v-on:click="edit($event)" type="button" class="btn btn-warning">編輯</button>
                     </th>
 
                 </tr>
@@ -88,8 +88,17 @@
                         console.log(error);
                     });
             },
+            getAllStudentCourse() {
+                axios
+                    .get('/api/StudentCourseSelection')
+                    .then(response => {
+                        this.allStudentWithCourses = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
             selectCourseNames(courses) {
-                console.log(courses);
                 return courses.map(x => x.name).join('、');
             },
             addNewStudentCourse() {
@@ -125,13 +134,52 @@
             },
             saveDelete(event) {
                 let targetNumber = event.currentTarget.dataset.number;
-                console.log(targetNumber);
                 axios
                     .delete('/api/StudentCourseSelection/' + targetNumber)
                     .then(response => {
                         let index = this.allStudentWithCourses.findIndex(x => x == this.allStudentWithCourses.find(x => x.studentNumber == targetNumber));
                         this.allStudentWithCourses.splice(index, 1);
                         alert("刪除成功");
+                    })
+                    .catch(function (error) {
+                        alert(error.response.data.message);
+                    });
+            },
+            edit(event) {
+                this.editMode = true;
+                let targetNumber = event.currentTarget.dataset.number;
+                this.studentSelected = targetNumber;
+                this.courseEdits.forEach(x => x.selected = false);
+                let target = this.allStudentWithCourses.find(x => x == this.allStudentWithCourses.find(x => x.studentNumber == targetNumber));
+                target.courses.forEach(x => {
+                    let courseEdit = this.courseEdits.find(y => y.courseNumber == x.number);
+                    if (courseEdit != undefined) {
+                        courseEdit.selected = true;
+                    }
+                });
+            },
+            saveEdit(event) {
+                let targetNumber = event.currentTarget.dataset.number;
+
+                let editStudentCourse = {
+                    studentNumber: this.studentSelected,
+                    courses: [],
+                };
+                this.courseEdits.forEach(e => {
+                    if (e.selected == true) {
+                        editStudentCourse.courses.push({
+                            number: e.courseNumber,
+                            name: e.courseName,
+                            isSeleted: e.selected,
+                        });
+                    }
+                });
+
+                axios
+                    .put('/api/StudentCourseSelection/', editStudentCourse)
+                    .then(response => {
+                        alert("儲存成功");
+                        this.getAllStudentCourse();
                     })
                     .catch(function (error) {
                         alert(error.response.data.message);
@@ -160,14 +208,7 @@
                     alert(error.response.data.message);
                 });
 
-            axios
-                .get('/api/StudentCourseSelection')
-                .then(response => {
-                    this.allStudentWithCourses = response.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+            this.getAllStudentCourse();
         }
     });
 

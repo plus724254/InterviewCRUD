@@ -13,5 +13,6 @@ namespace InterviewCRUD.Repository.Models.DTO
         public string Credit { get; set; }
         public string Place { get; set; }
         public string TeacherName { get; set; }
+        public bool IsSeleted { get; set; }
     }
 }

@@ -113,6 +113,24 @@ namespace InterviewCRUD.Service.Services
 
             _courseSelectRepository.SaveChanges();
         }
+        public void ReplaceStudentCourses(StudentCourseSelectionDTO studentCourseSelectionDTO)
+        {
+            var existCourses = _courseSelectRepository.Find(x => x.StudentNumber == studentCourseSelectionDTO.StudentNumber).ToList();
+            _courseSelectRepository.RemoveRange(existCourses);
+
+            var newCourses = studentCourseSelectionDTO.Courses
+                .Where(x=>x.IsSeleted == true)
+                .Select(x => new CourseSelect() 
+                { 
+                    StudentNumber = studentCourseSelectionDTO.StudentNumber,
+                    CourseNumber = x.Number,
+                })
+                .ToList();
+
+            _courseSelectRepository.AddRange(newCourses);
+
+            _courseSelectRepository.SaveChanges();
+        }
 
         private void CheckRepeatStudent(string number)
         {
