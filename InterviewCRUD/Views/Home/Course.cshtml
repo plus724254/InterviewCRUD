@@ -1,0 +1,142 @@
+﻿<div id="coursePage" class="row mt-5">
+    <div class="col-md-12">
+        <div class="col-md-12 mt-2">
+            <div class="col-md-12 pl-0">
+                <label>課號　　</label>
+                <input name="number" v-model="courseEdit.number">
+            </div>
+            <div class="col-md-12 pl-0">
+                <label>課名　　</label>
+                <input name="name" v-model="courseEdit.birthday">
+            </div>
+            <div class="col-md-12 pl-0">
+                <label>學分數　</label>
+                <input name="credit" v-model="courseEdit.name">
+            </div>
+            <div class="col-md-12 pl-0">
+                <label>上課地點</label>
+                <input name="place" v-model="courseEdit.email">
+            </div>
+            <div class="col-md-12 pl-0">
+                <label>講師名子</label>
+                <input name="teacherName" v-model="courseEdit.email">
+            </div>
+            <button v-if="editMode" v-on:click="saveEdit" type="button" class="btn btn-warning">儲存</button>
+            <button v-else v-on:click="addNewCourse" type="button" class="btn btn-primary">新增</button>
+        </div>
+
+        <table class="table mt-2">
+            <thead>
+                <tr>
+                    <th>課號</th>
+                    <th>課名</th>
+                    <th>學分數</th>
+                    <th>上課地點</th>
+                    <th>講師名子</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(course, index) in courses">
+                    <th>{{course.number}}</th>
+                    <th>{{course.name}}</th>
+                    <th>{{course.credit}}</th>
+                    <th>{{course.place}}</th>
+                    <th>{{course.teacherName}}</th>
+                    <th>
+                        <button :data-number="course.number" v-on:click="saveDelete($event)" type="button" class="btn btn-danger">刪除</button>
+                        <button :data-number="course.number" v-on:click="edit($event)" type="button" class="btn btn-warning">編輯</button>
+                    </th>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+    var coursePage = new Vue({
+        el: '#coursePage',
+        data: {
+            modifyNumber : null,
+            courseEdit: {
+                number: null,
+                name: null,
+                credit: null,
+                place: null,
+                teacherName: null,
+            },
+            editMode: false,
+            courses: null,
+        },
+        methods: {
+            saveDelete(event) {
+                let targetNumber = event.currentTarget.dataset.number;
+                axios
+                    .delete('/api/course/'+targetNumber)
+                    .then(response => {
+                        let index = this.courses.indexOf(this.courses.find(x => x.number == this.modifyNumber));
+                        this.courses.splice(index, 1);
+                        alert("刪除成功");
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            edit(event) {
+                this.editMode = !this.editMode;
+                this.modifyNumber = event.currentTarget.dataset.number;
+            },
+            saveEdit() {
+                this.editMode = false;
+
+                if (this.modifyNumber == this.courseEdit.number) {
+                    axios
+                        .patch('/api/course', this.courseEdit)
+                        .then(response => {
+                            let editTarget = this.courses.find(x => x.number == this.modifyNumber);
+                            Object.assign(editTarget, this.courseEdit);
+                            alert("修改成功");
+                        })
+                        .catch(function (error) {
+                            alert(error.response.data.message);
+                        });
+                } else {
+                    axios
+                        .put('/api/course/' + this.modifyNumber, this.courseEdit)
+                        .then(response => {
+                            let editTarget = this.courses.find(x => x.number == this.modifyNumber);
+                            Object.assign(editTarget, this.courseEdit);
+                            this.modifyNumber = this.courseEdit.number;
+                            alert("修改成功");
+                        })
+                        .catch(function (error) {
+                            alert(error.response.data.message);
+                        });
+                }
+            },
+            addNewCourse() {
+                axios
+                    .post('/api/course', this.courseEdit)
+                    .then(response => {
+                        let newCourse = Object.assign({}, this.courseEdit);;
+                        this.courses.push(newCourse);
+                        alert("新增成功");
+                    })
+                    .catch(function (error) {
+                        alert(error.response.data.message);
+                    });
+            },
+        },
+        mounted() {
+            axios
+                .get('/api/course')
+                .then(response => (this.courses = response.data))
+                .catch(function (error) {
+                    alert(error.response.data.message);
+                });
+        }
+    });
+
+</script>

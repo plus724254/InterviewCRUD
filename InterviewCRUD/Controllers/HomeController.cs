@@ -14,14 +14,14 @@ namespace InterviewCRUD.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult Course()
         {
             ViewBag.Message = "Your application description page.";
 
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult CourseSelection()
         {
             ViewBag.Message = "Your contact page.";
 

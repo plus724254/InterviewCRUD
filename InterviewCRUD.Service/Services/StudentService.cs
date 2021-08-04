@@ -39,5 +39,36 @@ namespace InterviewCRUD.Service.Services
 
             _studentRepository.SaveChanges();
         }
+
+        public void ReplaceStudent(string sourceNumber, StudentDTO studentDTO)
+        {
+            if(_studentRepository.GetById(studentDTO.Number) != null)
+            {
+                
+            }
+
+            var oldStudent = _studentRepository.GetById(sourceNumber);
+            _studentRepository.Add(new Student()
+            {
+                Number = studentDTO.Number,
+                Birthday = DateTime.Parse(studentDTO.Birthday),
+                Name = studentDTO.Name,
+                Email = studentDTO.Email,
+            });
+            _studentRepository.Remove(oldStudent);
+
+            _studentRepository.SaveChanges();
+        }
+
+        public void EditStudent(StudentDTO studentDTO)
+        {
+            var sourceStudent = _studentRepository.GetById(studentDTO.Number);
+
+            sourceStudent.Birthday = DateTime.Parse(studentDTO.Birthday);
+            sourceStudent.Name = studentDTO.Name;
+            sourceStudent.Email = studentDTO.Email;
+
+            _studentRepository.SaveChanges();
+        }
     }
 }

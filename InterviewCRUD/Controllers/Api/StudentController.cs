@@ -2,7 +2,10 @@
 using InterviewCRUD.Models.ViewModels;
 using InterviewCRUD.Service.Models.DTO;
 using InterviewCRUD.Service.Services;
+using InterviewCRUD.Tools;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 using AutoMap = InterviewCRUD.Tools.AutoMappers.AutoMap;
 
@@ -18,7 +21,6 @@ namespace InterviewCRUD.Controllers.Api
         }
 
         [HttpGet]
-        //[Route("")]
         public IHttpActionResult GetStudents()
         {
             return Ok(_studentService.GetAllStudents());
@@ -26,7 +28,7 @@ namespace InterviewCRUD.Controllers.Api
 
         [HttpGet]
         [Route("{id:int}")]
-        public IHttpActionResult GetStudent()
+        public IHttpActionResult GetStudent(string number)
         {
             return Ok(new StudentViewModel());
         }
@@ -34,6 +36,11 @@ namespace InterviewCRUD.Controllers.Api
         [HttpPost]
         public IHttpActionResult AddStudent(StudentViewModel student)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ErrorAnalyze.GetModelStateError(ModelState));
+            }
+
             _studentService.AddNewStudent(AutoMap.Mapper.Map<StudentDTO>(student));
             return Ok();
         }
@@ -42,13 +49,33 @@ namespace InterviewCRUD.Controllers.Api
         [Route("{number}")]
         public IHttpActionResult DeleteStudent(string number)
         {
+
             _studentService.DeleteStudent(number);
             return Ok();
         }
 
         [HttpPut]
-        public IHttpActionResult EditStudent()
+        [Route("{number}")]
+        public IHttpActionResult ReplaceStudent(string number, StudentViewModel editStudent)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ErrorAnalyze.GetModelStateError(ModelState));
+            }
+
+            _studentService.ReplaceStudent(number,AutoMap.Mapper.Map<StudentDTO>(editStudent));
+            return Ok();
+        }
+
+        [HttpPatch]
+        public IHttpActionResult EditStudent(StudentViewModel editStudent)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ErrorAnalyze.GetModelStateError(ModelState));
+            }
+
+            _studentService.EditStudent(AutoMap.Mapper.Map<StudentDTO>(editStudent));
             return Ok();
         }
     }

@@ -34,8 +34,8 @@
                     <th>{{student.name}}</th>
                     <th>{{student.email}}</th>
                     <th>
-                        <button :id="student.number" v-on:click="delete($event)" type="button" class="btn btn-danger">刪除</button>
-                        <button :id="student.number" v-on:click="edit($event)" :data-number="student.number" type="button" class="btn btn-warning">編輯</button>
+                        <button :data-number="student.number" v-on:click="saveDelete($event)" type="button" class="btn btn-danger">刪除</button>
+                        <button :data-number="student.number" v-on:click="edit($event)" type="button" class="btn btn-warning">編輯</button>
                     </th>
 
                 </tr>
@@ -60,37 +60,51 @@
             students: null,
         },
         methods: {
-            delete(event) {
-                let targetNumber = event.currentTarget.id;
+            saveDelete(event) {
+                let targetNumber = event.currentTarget.dataset.number;
+                console.log(targetNumber);
                 axios
-                    .delete('/api/student', targetNumber)
+                    .delete('/api/student/'+targetNumber)
                     .then(response => {
-                        let index = this.students.indexof(this.students.find(x => x.number == this.modifyNumber));
+                        let index = this.students.indexOf(this.students.find(x => x.number == this.modifyNumber));
                         this.students.splice(index, 1);
                         alert("刪除成功");
                     })
                     .catch(function (error) {
-                        console.log(error);
+                        alert(error.response.data.message);
                     });
             },
             edit(event) {
                 this.editMode = !this.editMode;
-                this.modifyNumber = event.currentTarget.id;
+                this.modifyNumber = event.currentTarget.dataset.number;
             },
             saveEdit() {
                 this.editMode = false;
-                axios
-                    .put('/api/student', this.studentEdit)
-                    .then(response => {
-                        let editTarget = this.students.find(x => x.number == this.modifyNumber);
-                        Object.assign(editTarget, this.studentEdit);
-                        console.log(editTarget);
-                        this.modifyNumber = this.studentEdit.number;
-                        alert("修改成功");
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+
+                if (this.modifyNumber == this.studentEdit.number) {
+                    axios
+                        .patch('/api/student', this.studentEdit)
+                        .then(response => {
+                            let editTarget = this.students.find(x => x.number == this.modifyNumber);
+                            Object.assign(editTarget, this.studentEdit);
+                            alert("修改成功");
+                        })
+                        .catch(function (error) {
+                            alert(error.response.data.message);
+                        });
+                } else {
+                    axios
+                        .put('/api/student/'+this.modifyNumber, this.studentEdit)
+                        .then(response => {
+                            let editTarget = this.students.find(x => x.number == this.modifyNumber);
+                            Object.assign(editTarget, this.studentEdit);
+                            this.modifyNumber = this.studentEdit.number;
+                            alert("修改成功");
+                        })
+                        .catch(function (error) {
+                            alert(error.response.data.message);
+                        });
+                }
             },
             addNewStudent() {
                 axios
@@ -101,7 +115,7 @@
                         alert("新增成功");
                     })
                     .catch(function (error) {
-                        console.log(error);
+                        alert(error.response.data.message);
                     });
             },
         },

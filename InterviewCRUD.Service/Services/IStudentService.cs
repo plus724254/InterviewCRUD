@@ -9,5 +9,7 @@ namespace InterviewCRUD.Service.Services
         List<Student> GetAllStudents();
         void AddNewStudent(StudentDTO student);
         void DeleteStudent(string number);
+        void ReplaceStudent(string sourceNumber, StudentDTO student);
+        void EditStudent(StudentDTO student);
     }
 }
