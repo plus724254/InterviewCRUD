@@ -34,6 +34,9 @@ namespace InterviewCRUD.App_Start
             builder.RegisterType<StudentService>().As<IStudentService>()
                .InstancePerLifetimeScope();
 
+            builder.RegisterType<CourseService>().As<ICourseService>()
+                .InstancePerLifetimeScope();
+
             builder.RegisterGeneric(typeof(GenericRepository<>)).As(typeof(IGenericRepository<>))
                 .InstancePerLifetimeScope();
 

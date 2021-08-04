@@ -1,40 +1,40 @@
-﻿using AutoMapper;
-using InterviewCRUD.Models.ViewModels;
+﻿using InterviewCRUD.Models.ViewModels;
 using InterviewCRUD.Service.Models.DTO;
 using InterviewCRUD.Service.Services;
 using InterviewCRUD.Tools;
+using InterviewCRUD.Tools.AutoMappers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Http;
-using AutoMap = InterviewCRUD.Tools.AutoMappers.AutoMap;
 
 namespace InterviewCRUD.Controllers.Api
 {
-    [RoutePrefix("api/Student")]
-    public class StudentController : ApiController
+    [RoutePrefix("api/Course")]
+    public class CourseController : ApiController
     {
-        private readonly IStudentService _studentService;
-        public StudentController(IStudentService studentService)
+        private readonly ICourseService _courseService;
+        public CourseController(ICourseService courseService)
         {
-            _studentService = studentService;
+            _courseService = courseService;
         }
 
         [HttpGet]
-        public IHttpActionResult GetStudents()
+        public IHttpActionResult GetCourses()
         {
-            return Ok(_studentService.GetAllStudents());
+            return Ok(_courseService.GetAllCourses());
         }
 
         [HttpGet]
         [Route("{id:int}")]
-        public IHttpActionResult GetStudent(string number)
+        public IHttpActionResult GetCourse(string number)
         {
-            return Ok(new StudentViewModel());
+            return Ok(new CourseViewModel());
         }
 
         [HttpPost]
-        public IHttpActionResult AddStudent(StudentViewModel student)
+        public IHttpActionResult AddCourse(CourseViewModel course)
         {
             if (!ModelState.IsValid)
             {
@@ -43,7 +43,7 @@ namespace InterviewCRUD.Controllers.Api
 
             try
             {
-                _studentService.AddNewStudent(AutoMap.Mapper.Map<StudentDTO>(student));
+                _courseService.AddNewCourse(AutoMap.Mapper.Map<CourseDTO>(course));
                 return Ok();
             }
             catch(Exception ex)
@@ -54,16 +54,15 @@ namespace InterviewCRUD.Controllers.Api
 
         [HttpDelete]
         [Route("{number}")]
-        public IHttpActionResult DeleteStudent(string number)
+        public IHttpActionResult DeleteCourse(string number)
         {
-
-            _studentService.DeleteStudent(number);
+            _courseService.DeleteCourse(number);
             return Ok();
         }
 
         [HttpPut]
         [Route("{number}")]
-        public IHttpActionResult ReplaceStudent(string number, StudentViewModel editStudent)
+        public IHttpActionResult ReplaceCourse(string number, CourseViewModel editCourse)
         {
             if (!ModelState.IsValid)
             {
@@ -72,24 +71,24 @@ namespace InterviewCRUD.Controllers.Api
 
             try
             {
-                _studentService.ReplaceStudent(number, AutoMap.Mapper.Map<StudentDTO>(editStudent));
+                _courseService.ReplaceCourse(number, AutoMap.Mapper.Map<CourseDTO>(editCourse));
                 return Ok();
             }
-             catch (Exception ex)
+            catch(Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpPatch]
-        public IHttpActionResult EditStudent(StudentViewModel editStudent)
+        public IHttpActionResult EditCourse(CourseViewModel editCourse)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ErrorAnalyze.GetModelStateError(ModelState));
             }
 
-            _studentService.EditStudent(AutoMap.Mapper.Map<StudentDTO>(editStudent));
+            _courseService.EditCourse(AutoMap.Mapper.Map<CourseDTO>(editCourse));
             return Ok();
         }
     }

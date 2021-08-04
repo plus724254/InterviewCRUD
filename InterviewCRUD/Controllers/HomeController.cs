@@ -16,15 +16,11 @@ namespace InterviewCRUD.Controllers
 
         public ActionResult Course()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
         public ActionResult CourseSelection()
         {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
     }

@@ -21,6 +21,8 @@ namespace InterviewCRUD.Service.Services
 
         public void AddNewStudent(StudentDTO studentDTO)
         {
+            CheckRepeatStudent(studentDTO.Number);
+
             _studentRepository.Add(new Student() 
             {
                 Number = studentDTO.Number,
@@ -42,10 +44,7 @@ namespace InterviewCRUD.Service.Services
 
         public void ReplaceStudent(string sourceNumber, StudentDTO studentDTO)
         {
-            if(_studentRepository.GetById(studentDTO.Number) != null)
-            {
-                
-            }
+            CheckRepeatStudent(studentDTO.Number);
 
             var oldStudent = _studentRepository.GetById(sourceNumber);
             _studentRepository.Add(new Student()
@@ -69,6 +68,14 @@ namespace InterviewCRUD.Service.Services
             sourceStudent.Email = studentDTO.Email;
 
             _studentRepository.SaveChanges();
+        }
+
+        private void CheckRepeatStudent(string number)
+        {
+            if(_studentRepository.GetById(number) != null)
+            {
+                throw new Exception("學號重複");
+            }
         }
     }
 }

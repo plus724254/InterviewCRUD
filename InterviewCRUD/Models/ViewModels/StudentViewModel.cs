@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
@@ -8,7 +9,6 @@ namespace InterviewCRUD.Models.ViewModels
 {
     public class StudentViewModel : IValidatableObject
     {
-
         public string Number { get; set; }
         public string Birthday { get; set; }
         [StringLength(20,ErrorMessage = "{0}不可超過20個字")]
@@ -18,7 +18,7 @@ namespace InterviewCRUD.Models.ViewModels
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if(!Number.StartsWith("S") || Number.Length != 5 || !int.TryParse(Number.Substring(1,4), out var number))
+            if(string.IsNullOrEmpty(Number) || !Number.StartsWith("S") || Number.Length != 5 || !int.TryParse(Number.Substring(1,4), out var number))
             {
                 yield return new ValidationResult("學號格式錯誤", new[] { nameof(Number) });
             }

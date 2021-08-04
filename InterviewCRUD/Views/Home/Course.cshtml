@@ -7,19 +7,19 @@
             </div>
             <div class="col-md-12 pl-0">
                 <label>課名　　</label>
-                <input name="name" v-model="courseEdit.birthday">
+                <input name="name" v-model="courseEdit.name">
             </div>
             <div class="col-md-12 pl-0">
                 <label>學分數　</label>
-                <input name="credit" v-model="courseEdit.name">
+                <input type="number" max="999" min="0" name="credit" v-model="courseEdit.credit" >
             </div>
             <div class="col-md-12 pl-0">
                 <label>上課地點</label>
-                <input name="place" v-model="courseEdit.email">
+                <input name="place" v-model="courseEdit.place">
             </div>
             <div class="col-md-12 pl-0">
                 <label>講師名子</label>
-                <input name="teacherName" v-model="courseEdit.email">
+                <input name="teacherName" v-model="courseEdit.teacherName">
             </div>
             <button v-if="editMode" v-on:click="saveEdit" type="button" class="btn btn-warning">儲存</button>
             <button v-else v-on:click="addNewCourse" type="button" class="btn btn-primary">新增</button>
@@ -85,12 +85,13 @@
                     });
             },
             edit(event) {
-                this.editMode = !this.editMode;
+                this.editMode = true;
                 this.modifyNumber = event.currentTarget.dataset.number;
+                let editTarget = this.courses.find(x => x.number == this.modifyNumber);
+                Object.assign(this.courseEdit, editTarget);
             },
             saveEdit() {
                 this.editMode = false;
-
                 if (this.modifyNumber == this.courseEdit.number) {
                     axios
                         .patch('/api/course', this.courseEdit)
@@ -102,6 +103,7 @@
                         .catch(function (error) {
                             alert(error.response.data.message);
                         });
+  
                 } else {
                     axios
                         .put('/api/course/' + this.modifyNumber, this.courseEdit)
@@ -115,6 +117,7 @@
                             alert(error.response.data.message);
                         });
                 }
+                
             },
             addNewCourse() {
                 axios

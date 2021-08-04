@@ -13,6 +13,7 @@ namespace InterviewCRUD.Tools.AutoMappers
         public CommonProfile()
         {
             CreateMap<StudentViewModel, StudentDTO>();
+            CreateMap<CourseViewModel, CourseDTO>();
         }
     }
 }
