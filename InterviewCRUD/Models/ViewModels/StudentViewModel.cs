@@ -9,10 +9,14 @@ namespace InterviewCRUD.Models.ViewModels
 {
     public class StudentViewModel : IValidatableObject
     {
+        [DisplayName("學號")]
         public string Number { get; set; }
+        [DisplayName("生日")]
         public string Birthday { get; set; }
+        [DisplayName("學生名稱")]
         [StringLength(20,ErrorMessage = "{0}不可超過20個字")]
         public string Name { get; set; }
+        [DisplayName("信箱")]
         [StringLength(50, ErrorMessage = "{0}不可超過50個字")]
         public string Email { get; set; }
 

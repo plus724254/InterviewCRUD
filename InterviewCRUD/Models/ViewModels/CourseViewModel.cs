@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
@@ -9,12 +10,17 @@ namespace InterviewCRUD.Models.ViewModels
     public class CourseViewModel : IValidatableObject
     {
         [Required]
+        [DisplayName("課號")]
         public string Number { get; set; }
+        [DisplayName("課程名稱")]
         [StringLength(20, ErrorMessage = "{0}不可超過20個字")]
         public string Name { get; set; }
+        [DisplayName("學分數")]
         public string Credit { get; set; }
+        [DisplayName("上課地點")]
         [StringLength(20, ErrorMessage = "{0}不可超過20個字")]
         public string Place { get; set; }
+        [DisplayName("教師名稱")]
         [StringLength(20, ErrorMessage = "{0}不可超過20個字")]
         public string TeacherName { get; set; }
 
