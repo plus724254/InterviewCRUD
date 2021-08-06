@@ -89,7 +89,13 @@ namespace InterviewCRUD.Service.Services
 
         public void AddStudentCourse(StudentCourseSelectionDTO studentCourseSelectionDTO)
         {
+            var seletedCourse = _courseSelectRepository
+                .Find(x => x.StudentNumber == studentCourseSelectionDTO.StudentNumber)
+                .Select(x => x.CourseNumber)
+                .ToList();
+
             var studentCourses = studentCourseSelectionDTO.Courses
+                .Where(x => !seletedCourse.Contains(x.Number))
                 .Select(x => new CourseSelect()
                 {
                     StudentNumber = studentCourseSelectionDTO.StudentNumber,

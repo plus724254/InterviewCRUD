@@ -124,7 +124,7 @@
                 axios
                     .post('/api/StudentCourseSelection/', newStudentCourse)
                     .then(response => {
-                        this.allStudentWithCourses.push(newStudentCourse);
+                        this.getAllStudentCourse();
                         this.editMode = true;
                         alert("新增成功");
                     })
