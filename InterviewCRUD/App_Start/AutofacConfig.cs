@@ -26,16 +26,16 @@ namespace InterviewCRUD.App_Start
             builder.RegisterWebApiFilterProvider(config);
 
             builder.RegisterType<StudentService>().As<IStudentService>()
-               .InstancePerLifetimeScope();
+               .InstancePerDependency();
 
             builder.RegisterType<CourseService>().As<ICourseService>()
-                .InstancePerLifetimeScope();
+                .InstancePerDependency();
 
             builder.RegisterGeneric(typeof(GenericRepository<>)).As(typeof(IGenericRepository<>))
-                .InstancePerLifetimeScope();
+                .InstancePerDependency();
 
             builder.RegisterType<StudentRepository>().As<IStudentRepository>()
-                .InstancePerLifetimeScope();
+                .InstancePerDependency();
 
             var container = builder.Build();
 
