@@ -68,7 +68,7 @@ namespace InterviewCRUD.Service.Services
 
                 _courseRepository.SaveChanges();
             }
-            catch(DataErrorException)
+            catch(Exception)
             {
                 throw new DataErrorException("尚有課程無法修改課號");
             }

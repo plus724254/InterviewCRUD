@@ -66,7 +66,7 @@ namespace InterviewCRUD.Service.Services
 
                 _studentRepository.SaveChanges();
             }
-            catch(DataErrorException)
+            catch(Exception)
             {
                 throw new DataErrorException("尚有課程無法修改學號");
             }
