@@ -50,8 +50,7 @@ namespace InterviewCRUD.Controllers.Api
             }
         }
 
-        [HttpDelete]
-        [Route("{number}")]
+        [HttpDelete, Route("{number}")]
         public IHttpActionResult DeleteStudent(string number)
         {
 
@@ -59,8 +58,7 @@ namespace InterviewCRUD.Controllers.Api
             return Ok();
         }
 
-        [HttpPut]
-        [Route("{number}")]
+        [HttpPut, Route("{number}")]
         public IHttpActionResult ReplaceStudent(string number, StudentViewModel editStudent)
         {
             if (!ModelState.IsValid)

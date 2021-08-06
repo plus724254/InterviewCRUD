@@ -22,8 +22,8 @@ namespace InterviewCRUD.Controllers.Api
         {
             return Ok(_studentService.GetAllStudentCourses());
         }
-        [HttpGet]
-        [Route("{studentNumber}")]
+
+        [HttpGet, Route("{studentNumber}")]
         public IHttpActionResult GetStudentCourseSelection(string studentNumber)
         {
             return Ok(_studentService.GetStudentCourses(studentNumber));
@@ -43,8 +43,7 @@ namespace InterviewCRUD.Controllers.Api
             return Ok();
         }
 
-        [HttpDelete]
-        [Route("{studentNumber}")]
+        [HttpDelete, Route("{studentNumber}")]
         public IHttpActionResult DeleteStudentCourses(string studentNumber)
         {
 

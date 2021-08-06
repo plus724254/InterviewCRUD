@@ -24,8 +24,7 @@ namespace InterviewCRUD.Controllers.Api
             return Ok(_courseService.GetAllCourses());
         }
 
-        [HttpGet]
-        [Route("{id:int}")]
+        [HttpGet, Route("{id:int}")]
         public IHttpActionResult GetCourse(string number)
         {
             return Ok(new CourseViewModel());
@@ -50,16 +49,14 @@ namespace InterviewCRUD.Controllers.Api
             }
         }
 
-        [HttpDelete]
-        [Route("{number}")]
+        [HttpDelete, Route("{number}")]
         public IHttpActionResult DeleteCourse(string number)
         {
             _courseService.DeleteCourse(number);
             return Ok();
         }
 
-        [HttpPut]
-        [Route("{number}")]
+        [HttpPut, Route("{number}")]
         public IHttpActionResult ReplaceCourse(string number, CourseViewModel editCourse)
         {
             if (!ModelState.IsValid)
