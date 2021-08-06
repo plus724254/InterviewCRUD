@@ -78,6 +78,7 @@
                     .then(response => {
                         let index = this.courses.indexOf(this.courses.find(x => x.number == targetNumber));
                         this.courses.splice(index, 1);
+                        this.editMode = false;
                         alert("刪除成功");
                     })
                     .catch(function (error) {

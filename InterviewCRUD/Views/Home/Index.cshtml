@@ -67,6 +67,7 @@
                     .then(response => {
                         let index = this.students.findIndex(x => x == this.students.find(x => x.number == targetNumber));
                         this.students.splice(index, 1);
+                        this.editMode = false;
                         alert("刪除成功");
                     })
                     .catch(function (error) {
