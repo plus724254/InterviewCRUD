@@ -24,8 +24,7 @@ namespace InterviewCRUD.Controllers.Api
             return Ok(_studentService.GetAllStudents());
         }
 
-        [HttpGet]
-        [Route("{id:int}")]
+        [HttpGet, Route("{id:int}")]
         public IHttpActionResult GetStudent(string number)
         {
             return Ok(new StudentViewModel());
