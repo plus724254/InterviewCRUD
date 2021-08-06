@@ -1,4 +1,5 @@
 ﻿using InterviewCRUD.Repository.Entities;
+using InterviewCRUD.Repository.Models.CustomExceptions;
 using InterviewCRUD.Repository.Models.DTO;
 using InterviewCRUD.Repository.Repositories;
 using System;
@@ -67,9 +68,9 @@ namespace InterviewCRUD.Service.Services
 
                 _courseRepository.SaveChanges();
             }
-            catch(Exception ex)
+            catch(DataErrorException)
             {
-                throw new Exception("尚有課程無法修改課號");
+                throw new DataErrorException("尚有課程無法修改課號");
             }
         }
 
@@ -89,7 +90,7 @@ namespace InterviewCRUD.Service.Services
         {
             if (_courseRepository.GetById(number) != null)
             {
-                throw new Exception("課號重複");
+                throw new DataErrorException("課號重複");
             }
         }
     }

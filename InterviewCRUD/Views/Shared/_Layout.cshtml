@@ -9,7 +9,18 @@
 
     <script src="~/Scripts/vue.min.js"></script>
     <script src="~/Scripts/axios.min.js"></script>
+
+<script>
+    function globalErrorHandle(error) {
+        if (error.response.status == 400) {
+        alert(error.response.data.message);
+        } else {
+        alert("未知的錯誤，請聯繫系統管理員");
+        }
+    }
+</script>
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#">選課管理系統</a>

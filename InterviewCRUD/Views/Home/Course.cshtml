@@ -81,7 +81,7 @@
                         alert("刪除成功");
                     })
                     .catch(function (error) {
-                        console.log(error);
+                        globalErrorHandle(error);
                     });
             },
             edit(event) {
@@ -102,7 +102,7 @@
 
                         })
                         .catch(function (error) {
-                            alert(error.response.data.message);
+                            globalErrorHandle(error);
                         });
   
                 } else {
@@ -116,7 +116,7 @@
                             alert("修改成功");
                         })
                         .catch(function (error) {
-                            alert(error.response.data.message);
+                            globalErrorHandle(error);
                         });
                 }
                 
@@ -130,7 +130,7 @@
                         alert("新增成功");
                     })
                     .catch(function (error) {
-                        alert(error.response.data.message);
+                        globalErrorHandle(error);
                     });
             },
         },
@@ -139,7 +139,7 @@
                 .get('/api/course')
                 .then(response => (this.courses = response.data))
                 .catch(function (error) {
-                    alert(error.response.data.message);
+                    globalErrorHandle(error);
                 });
         }
     });

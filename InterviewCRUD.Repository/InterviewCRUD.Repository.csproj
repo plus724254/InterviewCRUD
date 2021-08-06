@@ -91,6 +91,7 @@
     <Compile Include="Entities\Student.cs">
       <DependentUpon>CourseSelection.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CustomExceptions\DataErrorException.cs" />
     <Compile Include="Models\DTO\CourseDTO.cs" />
     <Compile Include="Models\DTO\StudentCourseSelectionDTO.cs" />
     <Compile Include="Models\DTO\StudentDTO.cs" />

@@ -1,4 +1,5 @@
 ﻿using InterviewCRUD.Models.ViewModels;
+using InterviewCRUD.Repository.Models.CustomExceptions;
 using InterviewCRUD.Repository.Models.DTO;
 using InterviewCRUD.Service.Services;
 using InterviewCRUD.Tools;
@@ -43,7 +44,7 @@ namespace InterviewCRUD.Controllers.Api
                 _studentService.AddNewStudent(AutoMap.Mapper.Map<StudentDTO>(student));
                 return Ok();
             }
-            catch(Exception ex)
+            catch(DataErrorException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -72,7 +73,7 @@ namespace InterviewCRUD.Controllers.Api
                 _studentService.ReplaceStudent(number, AutoMap.Mapper.Map<StudentDTO>(editStudent));
                 return Ok();
             }
-             catch (Exception ex)
+            catch (DataErrorException ex)
             {
                 return BadRequest(ex.Message);
             }

@@ -4,6 +4,9 @@ GO
 CREATE DATABASE [CourseSelection]
 
 GO
+USE [CourseSelection]
+
+GO
 CREATE TABLE [dbo].[Student](
 	[Number] CHAR(5) NOT NULL PRIMARY KEY,
 	[Name] NVARCHAR(20) NULL,
