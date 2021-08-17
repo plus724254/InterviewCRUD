@@ -21,6 +21,7 @@ namespace InterviewCRUD.Repository.Repositories
                      from c in tb2.DefaultIfEmpty()
                      select new { s.Number, s.Name, CourseNumber = c.Number, CourseName = c.Name })
             .Where(x => x.Number == studentNumber)
+            .AsEnumerable()
             .GroupBy(x => new { x.Number, x.Name })
             .Select(x => new StudentCourseSelectionDTO()
             {
@@ -45,6 +46,7 @@ namespace InterviewCRUD.Repository.Repositories
                     on cs.CourseNumber equals c.Number into tb2
                     from c in tb2.DefaultIfEmpty()
                     select new { s.Number, s.Name, CourseNumber = c.Number, CourseName = c.Name })
+            .AsEnumerable()
             .GroupBy(x => new { x.Number, x.Name })
             .Select(x => new StudentCourseSelectionDTO()
             {
