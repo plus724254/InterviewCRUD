@@ -67,6 +67,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Infrastructures\IUnitOfWork.cs" />
+    <Compile Include="Infrastructures\UnitOfWork.cs" />
     <Compile Include="Entities\Course.cs">
       <DependentUpon>CourseSelection.tt</DependentUpon>
     </Compile>

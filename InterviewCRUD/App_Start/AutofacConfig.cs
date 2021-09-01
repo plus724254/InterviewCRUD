@@ -1,8 +1,11 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
 using Autofac.Integration.WebApi;
+using InterviewCRUD.Repository.Entities;
+using InterviewCRUD.Repository.Infrastructures;
 using InterviewCRUD.Repository.Repositories;
 using InterviewCRUD.Service.Services;
+using System.Data.Entity;
 using System.Reflection;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -25,6 +28,12 @@ namespace InterviewCRUD.App_Start
             builder.RegisterFilterProvider();
             builder.RegisterWebApiFilterProvider(config);
 
+            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<CourseSelectionEntities>().As<DbContext>()
+                .InstancePerLifetimeScope();
+
             builder.RegisterType<StudentService>().As<IStudentService>()
                .InstancePerDependency();
 
@@ -32,10 +41,10 @@ namespace InterviewCRUD.App_Start
                 .InstancePerDependency();
 
             builder.RegisterGeneric(typeof(GenericRepository<>)).As(typeof(IGenericRepository<>))
-                .InstancePerDependency();
+                .InstancePerLifetimeScope();
 
             builder.RegisterType<StudentRepository>().As<IStudentRepository>()
-                .InstancePerDependency();
+                .InstancePerLifetimeScope();
 
             var container = builder.Build();
 

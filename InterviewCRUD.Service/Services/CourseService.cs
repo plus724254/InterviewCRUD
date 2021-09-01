@@ -1,4 +1,5 @@
 ﻿using InterviewCRUD.Repository.Entities;
+using InterviewCRUD.Repository.Infrastructures;
 using InterviewCRUD.Repository.Models.CustomExceptions;
 using InterviewCRUD.Repository.Models.DTO;
 using InterviewCRUD.Repository.Repositories;
@@ -10,22 +11,20 @@ namespace InterviewCRUD.Service.Services
 {
     public class CourseService : ICourseService
     {
-        private readonly IGenericRepository<Course> _courseRepository;
-        private readonly IGenericRepository<CourseSelect> _courseSelectRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CourseService(IGenericRepository<Course> courseRepository, IGenericRepository<CourseSelect> courseSelectRepository)
+        public CourseService(IUnitOfWork unitOfWork)
         {
-            _courseRepository = courseRepository;
-            _courseSelectRepository = courseSelectRepository;
+            _unitOfWork = unitOfWork;
         }
 
-        public List<Course> GetAllCourses() => _courseRepository.GetAll().ToList();
+        public List<Course> GetAllCourses() => _unitOfWork.CourseRepository.GetAll().ToList();
 
         public void AddNewCourse(CourseDTO courseDTO)
         {
             CheckRepeatCourse(courseDTO.Number);
 
-            _courseRepository.Add(new Course()
+            _unitOfWork.CourseRepository.Add(new Course()
             {
                 Number = courseDTO.Number,
                 Name = courseDTO.Name,
@@ -34,29 +33,32 @@ namespace InterviewCRUD.Service.Services
                 TeacherName = courseDTO.TeacherName,
             });
 
-            _courseRepository.SaveChanges();
+            _unitOfWork.SaveChanges();
         }
 
         public void DeleteCourse(string number)
         {
-            var selectCource = _courseSelectRepository.Find(x => x.CourseNumber == number).ToList();
-            _courseSelectRepository.RemoveRange(selectCource);
-            _courseSelectRepository.SaveChanges();
+            var courseSelectRepository = _unitOfWork.CourseSelectRepository;
+            var courseRepository = _unitOfWork.CourseRepository;
 
-            var course = _courseRepository.GetById(number);
-            _courseRepository.Remove(course);
+            var selectCource = courseSelectRepository.Find(x => x.CourseNumber == number).ToList();
+            courseSelectRepository.RemoveRange(selectCource);
 
-            _courseRepository.SaveChanges();
+            var course = courseRepository.GetById(number);
+            courseRepository.Remove(course);
+
+            _unitOfWork.SaveChanges();
         }
 
         public void ReplaceCourse(string sourceNumber, CourseDTO courseDTO)
         {
             CheckRepeatCourse(courseDTO.Number);
+            var courseRepository = _unitOfWork.CourseRepository;
 
             try
             {
-                var oldCourse = _courseRepository.GetById(sourceNumber);
-                _courseRepository.Add(new Course()
+                var oldCourse = courseRepository.GetById(sourceNumber);
+                courseRepository.Add(new Course()
                 {
                     Number = courseDTO.Number,
                     Name = courseDTO.Name,
@@ -64,9 +66,9 @@ namespace InterviewCRUD.Service.Services
                     Place = courseDTO.Place,
                     TeacherName = courseDTO.TeacherName,
                 });
-                _courseRepository.Remove(oldCourse);
+                courseRepository.Remove(oldCourse);
 
-                _courseRepository.SaveChanges();
+                _unitOfWork.SaveChanges();
             }
             catch(Exception)
             {
@@ -76,19 +78,19 @@ namespace InterviewCRUD.Service.Services
 
         public void EditCourse(CourseDTO courseDTO)
         {
-            var sourceCourse = _courseRepository.GetById(courseDTO.Number);
+            var sourceCourse = _unitOfWork.CourseRepository.GetById(courseDTO.Number);
 
             sourceCourse.Name = courseDTO.Name;
             sourceCourse.Credit = int.Parse(courseDTO.Credit);
             sourceCourse.Place = courseDTO.Place;
             sourceCourse.TeacherName = courseDTO.TeacherName;
 
-            _courseRepository.SaveChanges();
+            _unitOfWork.SaveChanges();
         }
 
         private void CheckRepeatCourse(string number)
         {
-            if (_courseRepository.GetById(number) != null)
+            if (_unitOfWork.CourseRepository.GetById(number) != null)
             {
                 throw new DataErrorException("課號重複");
             }

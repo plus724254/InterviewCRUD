@@ -13,13 +13,8 @@ namespace InterviewCRUD.Repository.Repositories
     {
         protected readonly DbContext _context;
         protected readonly DbSet<TEntity> _set;
-        public GenericRepository()
-        {
-            _context = new CourseSelectionEntities();
-            _set = _context.Set<TEntity>();
-        }
 
-        public GenericRepository(CourseSelectionEntities context)
+        public GenericRepository(DbContext context)
         {
             _context = context;
             _set = _context.Set<TEntity>();
@@ -27,42 +22,37 @@ namespace InterviewCRUD.Repository.Repositories
 
         public void Add(TEntity entity)
         {
-            _context.Set<TEntity>().Add(entity);
+            _set.Add(entity);
         }
 
         public void AddRange(IEnumerable<TEntity> entities)
         {
-            _context.Set<TEntity>().AddRange(entities);
+            _set.AddRange(entities);
         }
 
         public void Remove(TEntity entity)
         {
-            _context.Set<TEntity>().Remove(entity);
+            _set.Remove(entity);
         }
 
         public void RemoveRange(IEnumerable<TEntity> entities)
         {
-            _context.Set<TEntity>().RemoveRange(entities);
+            _set.RemoveRange(entities);
         }
 
         public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
         {
-            return _context.Set<TEntity>().Where(predicate).AsEnumerable();
+            return _set.Where(predicate).AsEnumerable();
         }
 
         public IEnumerable<TEntity> GetAll()
         {
-            return _context.Set<TEntity>().AsEnumerable();
+            return _set.AsEnumerable();
         }
 
         public TEntity GetById(string id)
         {
-            return _context.Set<TEntity>().Find(id);
-        }
-
-        public void SaveChanges()
-        {
-            _context.SaveChanges();
+            return _set.Find(id);
         }
     }
 }

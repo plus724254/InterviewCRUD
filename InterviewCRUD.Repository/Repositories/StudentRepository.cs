@@ -2,6 +2,7 @@
 using InterviewCRUD.Repository.Models.DTO;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,11 @@ namespace InterviewCRUD.Repository.Repositories
 {
     public class StudentRepository : GenericRepository<Student>, IStudentRepository
     {
+        public StudentRepository(DbContext context) : base(context)
+        {
+
+        }
+
         public StudentCourseSelectionDTO GetStudentCourses(string studentNumber)
         {
             return (from s in _context.Set<Student>()

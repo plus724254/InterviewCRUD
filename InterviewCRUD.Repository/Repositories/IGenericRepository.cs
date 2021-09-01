@@ -16,6 +16,5 @@ namespace InterviewCRUD.Repository.Repositories
         IEnumerable<T> Find(Expression<Func<T, bool>> predicate);
         void Remove(T entity);
         void RemoveRange(IEnumerable<T> entities);
-        void SaveChanges();
     }
 }
