@@ -14,6 +14,7 @@ namespace InterviewCRUD.Repository.Repositories
         T GetById(string id);
         IEnumerable<T> GetAll();
         IEnumerable<T> Find(Expression<Func<T, bool>> predicate);
+        void Update(T entity);
         void Remove(T entity);
         void RemoveRange(IEnumerable<T> entities);
     }

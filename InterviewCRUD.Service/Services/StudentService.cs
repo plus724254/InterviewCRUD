@@ -76,14 +76,18 @@ namespace InterviewCRUD.Service.Services
 
         public void EditStudent(StudentDTO studentDTO)
         {
-            var sourceStudent = _unitOfWork.StudentRepository.GetById(studentDTO.Number);
+            var student = new Student()
+            {
+                Number = studentDTO.Number,
+                Birthday = DateTime.Parse(studentDTO.Birthday),
+                Name = studentDTO.Name,
+                Email = studentDTO.Email,
+            };
 
-            sourceStudent.Birthday = DateTime.Parse(studentDTO.Birthday);
-            sourceStudent.Name = studentDTO.Name;
-            sourceStudent.Email = studentDTO.Email;
-
+            _unitOfWork.StudentRepository.Update(student);
             _unitOfWork.SaveChanges();
         }
+
         public StudentCourseSelectionDTO GetStudentCourses(string studentNumber)
         {
             return _unitOfWork.StudentRepository.GetStudentCourses(studentNumber);

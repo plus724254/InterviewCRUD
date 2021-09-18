@@ -54,5 +54,9 @@ namespace InterviewCRUD.Repository.Repositories
         {
             return _set.Find(id);
         }
+        public void Update(TEntity entity)
+        {
+            _context.Entry(entity).State = EntityState.Modified;
+        }
     }
 }

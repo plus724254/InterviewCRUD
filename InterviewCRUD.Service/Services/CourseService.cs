@@ -78,13 +78,16 @@ namespace InterviewCRUD.Service.Services
 
         public void EditCourse(CourseDTO courseDTO)
         {
-            var sourceCourse = _unitOfWork.CourseRepository.GetById(courseDTO.Number);
+            var course = new Course
+            {
+                Number = courseDTO.Number,
+                Name = courseDTO.Name,
+                Credit = int.Parse(courseDTO.Credit),
+                Place = courseDTO.Place,
+                TeacherName = courseDTO.TeacherName,
+            };
 
-            sourceCourse.Name = courseDTO.Name;
-            sourceCourse.Credit = int.Parse(courseDTO.Credit);
-            sourceCourse.Place = courseDTO.Place;
-            sourceCourse.TeacherName = courseDTO.TeacherName;
-
+            _unitOfWork.CourseRepository.Update(course);
             _unitOfWork.SaveChanges();
         }
 
