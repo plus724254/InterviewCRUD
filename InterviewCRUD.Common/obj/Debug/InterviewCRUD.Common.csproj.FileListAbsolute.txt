@@ -1,0 +1,6 @@
+C:\Users\User\Desktop\InterviewCRUD\InterviewCRUD.Common\bin\Debug\InterviewCRUD.Common.dll
+C:\Users\User\Desktop\InterviewCRUD\InterviewCRUD.Common\bin\Debug\InterviewCRUD.Common.pdb
+C:\Users\User\Desktop\InterviewCRUD\InterviewCRUD.Common\obj\Debug\InterviewCRUD.Common.csproj.AssemblyReference.cache
+C:\Users\User\Desktop\InterviewCRUD\InterviewCRUD.Common\obj\Debug\InterviewCRUD.Common.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\InterviewCRUD\InterviewCRUD.Common\obj\Debug\InterviewCRUD.Common.dll
+C:\Users\User\Desktop\InterviewCRUD\InterviewCRUD.Common\obj\Debug\InterviewCRUD.Common.pdb

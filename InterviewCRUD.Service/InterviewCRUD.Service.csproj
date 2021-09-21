@@ -70,6 +70,10 @@
     <Compile Include="Services\StudentService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\InterviewCRUD.Common\InterviewCRUD.Common.csproj">
+      <Project>{2D7FE14C-679A-4BE7-A05F-55C3C587CE71}</Project>
+      <Name>InterviewCRUD.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InterviewCRUD.Repository\InterviewCRUD.Repository.csproj">
       <Project>{5d61235e-6681-4810-b743-48723eca7750}</Project>
       <Name>InterviewCRUD.Repository</Name>

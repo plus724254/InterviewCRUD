@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using InterviewCRUD.Common.DTO;
 using InterviewCRUD.Models.ViewModels;
 using InterviewCRUD.Repository.Models.DTO;
 

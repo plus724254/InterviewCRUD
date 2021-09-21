@@ -1,9 +1,8 @@
-﻿using InterviewCRUD.Models.ViewModels;
-using InterviewCRUD.Repository.Models.CustomExceptions;
+﻿using InterviewCRUD.Common.CustomExceptions;
+using InterviewCRUD.Models.ViewModels;
 using InterviewCRUD.Repository.Models.DTO;
 using InterviewCRUD.Service.Services;
 using InterviewCRUD.Tools;
-using System;
 using System.Web.Http;
 using AutoMap = InterviewCRUD.Tools.AutoMappers.AutoMap;
 

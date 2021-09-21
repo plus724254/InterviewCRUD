@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace InterviewCRUD.Repository.Models.DTO
+namespace InterviewCRUD.Common.DTO
 {
     public class CourseDTO
     {

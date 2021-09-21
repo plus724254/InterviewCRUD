@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace InterviewCRUD.Repository.Models.CustomExceptions
+namespace InterviewCRUD.Common.CustomExceptions
 {
     public class DataErrorException : Exception
     {

@@ -1,9 +1,5 @@
-﻿using InterviewCRUD.Repository.Entities;
-using System;
+﻿using InterviewCRUD.Common.DTO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InterviewCRUD.Repository.Models.DTO
 {

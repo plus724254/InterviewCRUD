@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterviewCRUD.Service", "..
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterviewCRUD.Repository", "..\InterviewCRUD.Repository\InterviewCRUD.Repository.csproj", "{5D61235E-6681-4810-B743-48723ECA7750}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterviewCRUD.Common", "..\InterviewCRUD.Common\InterviewCRUD.Common.csproj", "{2D7FE14C-679A-4BE7-A05F-55C3C587CE71}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{5D61235E-6681-4810-B743-48723ECA7750}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D61235E-6681-4810-B743-48723ECA7750}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D61235E-6681-4810-B743-48723ECA7750}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D7FE14C-679A-4BE7-A05F-55C3C587CE71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D7FE14C-679A-4BE7-A05F-55C3C587CE71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D7FE14C-679A-4BE7-A05F-55C3C587CE71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D7FE14C-679A-4BE7-A05F-55C3C587CE71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

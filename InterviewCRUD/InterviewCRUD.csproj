@@ -380,6 +380,10 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\InterviewCRUD.Common\InterviewCRUD.Common.csproj">
+      <Project>{2D7FE14C-679A-4BE7-A05F-55C3C587CE71}</Project>
+      <Name>InterviewCRUD.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InterviewCRUD.Repository\InterviewCRUD.Repository.csproj">
       <Project>{5D61235E-6681-4810-B743-48723ECA7750}</Project>
       <Name>InterviewCRUD.Repository</Name>

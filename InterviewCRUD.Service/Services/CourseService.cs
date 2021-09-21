@@ -1,7 +1,7 @@
-﻿using InterviewCRUD.Repository.Entities;
+﻿using InterviewCRUD.Common.CustomExceptions;
+using InterviewCRUD.Common.DTO;
+using InterviewCRUD.Repository.Entities;
 using InterviewCRUD.Repository.Infrastructures;
-using InterviewCRUD.Repository.Models.CustomExceptions;
-using InterviewCRUD.Repository.Models.DTO;
 using InterviewCRUD.Repository.Repositories;
 using System;
 using System.Collections.Generic;
