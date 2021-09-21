@@ -17,13 +17,13 @@ namespace InterviewCRUD.Service.Services
             _unitOfWork = unitOfWork;
         }
 
-        public List<Student> GetAllStudents() => _unitOfWork.StudentRepository.GetAll().ToList();
+        public List<Student> GetAllStudents() => _unitOfWork.GetRepository<IStudentRepository>().GetAll().ToList();
 
         public void AddNewStudent(StudentDTO studentDTO)
         {
             CheckRepeatStudent(studentDTO.Number);
 
-            _unitOfWork.StudentRepository.Add(new Student() 
+            _unitOfWork.GetRepository<IStudentRepository>().Add(new Student() 
             {
                 Number = studentDTO.Number,
                 Birthday = DateTime.Parse(studentDTO.Birthday),
@@ -36,8 +36,8 @@ namespace InterviewCRUD.Service.Services
 
         public void DeleteStudent(string number)
         {
-            var courseSelectRepository = _unitOfWork.CourseSelectRepository;
-            var studentRepository = _unitOfWork.StudentRepository;
+            var courseSelectRepository = _unitOfWork.GetRepository<IGenericRepository<CourseSelect>>();
+            var studentRepository = _unitOfWork.GetRepository<IStudentRepository>();
 
             var selectCourses = courseSelectRepository.Find(x => x.StudentNumber == number);
             var student = studentRepository.GetById(number);
@@ -51,7 +51,7 @@ namespace InterviewCRUD.Service.Services
         public void ReplaceStudent(string sourceNumber, StudentDTO studentDTO)
         {
             CheckRepeatStudent(studentDTO.Number);
-            var studentRepository = _unitOfWork.StudentRepository;
+            var studentRepository = _unitOfWork.GetRepository<IStudentRepository>();
 
             try
             {
@@ -84,18 +84,20 @@ namespace InterviewCRUD.Service.Services
                 Email = studentDTO.Email,
             };
 
-            _unitOfWork.StudentRepository.Update(student);
+            _unitOfWork.GetRepository<IStudentRepository>().Update(student);
             _unitOfWork.SaveChanges();
         }
 
         public StudentCourseSelectionDTO GetStudentCourses(string studentNumber)
         {
-            return _unitOfWork.StudentRepository.GetStudentCourses(studentNumber);
+            return _unitOfWork.GetRepository<IStudentRepository>().GetStudentCourses(studentNumber);
         }
 
         public void AddStudentCourse(StudentCourseSelectionDTO studentCourseSelectionDTO)
         {
-            var seletedCourse = _unitOfWork.CourseSelectRepository
+            var courseSelectRepository = _unitOfWork.GetRepository<IGenericRepository<CourseSelect>>();
+
+            var seletedCourse = courseSelectRepository
                 .Find(x => x.StudentNumber == studentCourseSelectionDTO.StudentNumber)
                 .Select(x => x.CourseNumber)
                 .ToList();
@@ -109,26 +111,27 @@ namespace InterviewCRUD.Service.Services
                 })
                 .ToList();
 
-            _unitOfWork.CourseSelectRepository.AddRange(studentCourses);
+            courseSelectRepository.AddRange(studentCourses);
 
             _unitOfWork.SaveChanges();
         }
 
         public List<StudentCourseSelectionDTO> GetAllStudentCourses()
         {
-            return _unitOfWork.StudentRepository.GetAllStudentCourses().Where(x=>x.Courses.Any(y=>!string.IsNullOrEmpty(y.Number))).ToList();
+            return _unitOfWork.GetRepository<IStudentRepository>().GetAllStudentCourses().Where(x=>x.Courses.Any(y=>!string.IsNullOrEmpty(y.Number))).ToList();
         }
 
         public void DeleteStudentCourses(string studentNumber)
         {
-            var studentCourses = _unitOfWork.CourseSelectRepository.Find(x => x.StudentNumber == studentNumber).ToList();
-            _unitOfWork.CourseSelectRepository.RemoveRange(studentCourses);
+            var courseSelectRepository = _unitOfWork.GetRepository<IGenericRepository<CourseSelect>>();
+            var studentCourses = courseSelectRepository.Find(x => x.StudentNumber == studentNumber).ToList();
+            courseSelectRepository.RemoveRange(studentCourses);
 
             _unitOfWork.SaveChanges();
         }
         public void ReplaceStudentCourses(StudentCourseSelectionDTO studentCourseSelectionDTO)
         {
-            var courseSelectRepository = _unitOfWork.CourseSelectRepository;
+            var courseSelectRepository = _unitOfWork.GetRepository<IGenericRepository<CourseSelect>>();
 
             var existCourses = courseSelectRepository.Find(x => x.StudentNumber == studentCourseSelectionDTO.StudentNumber).ToList();
             courseSelectRepository.RemoveRange(existCourses);
@@ -149,7 +152,7 @@ namespace InterviewCRUD.Service.Services
 
         private void CheckRepeatStudent(string number)
         {
-            if(_unitOfWork.StudentRepository.GetById(number) != null)
+            if(_unitOfWork.GetRepository<IStudentRepository>().GetById(number) != null)
             {
                 throw new DataErrorException("學號重複");
             }

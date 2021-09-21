@@ -10,9 +10,7 @@ namespace InterviewCRUD.Repository.Infrastructures
 {
     public interface IUnitOfWork
     {
-        IGenericRepository<Course> CourseRepository { get; }
-        IStudentRepository StudentRepository { get; }
-        IGenericRepository<CourseSelect> CourseSelectRepository { get; }
+        TRepository GetRepository<TRepository>();
         int SaveChanges();
     }
 }

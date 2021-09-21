@@ -1,4 +1,5 @@
-﻿using InterviewCRUD.Repository.Entities;
+﻿using Autofac;
+using InterviewCRUD.Repository.Entities;
 using InterviewCRUD.Repository.Repositories;
 using System;
 using System.Collections.Generic;
@@ -12,19 +13,30 @@ namespace InterviewCRUD.Repository.Infrastructures
     public class UnitOfWork : IUnitOfWork
     {
         private DbContext _context;
-        private Dictionary<Type, object> repositories;
-        public IGenericRepository<Course> CourseRepository { get; private set; }
-        public IStudentRepository StudentRepository { get; private set; }
-        public IGenericRepository<CourseSelect> CourseSelectRepository { get; private set; }
+        private Dictionary<Type, object> _repositories;
+        private ILifetimeScope _lifetimeScope;
+
         public UnitOfWork(DbContext context,
-            IGenericRepository<Course> courseRepository,
-            IStudentRepository studentRepository,
-            IGenericRepository<CourseSelect> courseSelectRepository)
+            ILifetimeScope lifetimeScope)
         {
             _context = context;
-            CourseRepository = courseRepository;
-            StudentRepository = studentRepository;
-            CourseSelectRepository = courseSelectRepository;
+            _lifetimeScope = lifetimeScope;
+        }
+
+        public TRepository GetRepository<TRepository>()
+        {
+            if(_repositories == null)
+            {
+                _repositories = new Dictionary<Type, object>();
+            }
+
+            if(!_repositories.TryGetValue(typeof(TRepository), out var repository))
+            {
+                repository = _lifetimeScope.Resolve<TRepository>();
+                _repositories.Add(typeof(TRepository), repository);
+            }
+
+            return (TRepository)repository;
         }
 
         public int SaveChanges()
